@@ -9,7 +9,7 @@ import NowWhat from './components/NowWhat';
 import MenuSelect from './components/MenuSelect';
 import Chart from './components/Chart';
 
-// import { fetchMeasurementsData } from './api';
+import { fetchMeasurementsData } from './api';
 
 const theme = createTheme({
   palette: {
@@ -28,55 +28,25 @@ const theme = createTheme({
 const App = () => {
   const [metricNames, setMetricNames] = useState(['oilTemp']);
   const [measurementsData, setMeasurementsData] = useState([]);
-  // Pull historical measurements data from graphQL API
-  const fetchMeasurementsData = async (metric) => {
-    try {
-      const response = await fetch('https://react.eogresources.com/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
-                  {
-                      getMeasurements(input:{metricName: "${metric}"}){
-                          metric
-                          at
-                          value
-                          unit
-                      }
-                  }
-                      `,
-        }),
-      });
-      const { data } = await response.json();
-      console.log(data);
-      console.log(metricNames);
-      setMeasurementsData(data.getMeasurements);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(async () => {
-    await fetchMeasurementsData(metricNames[0]);
+    setMeasurementsData(await fetchMeasurementsData(metricNames));
   }, [metricNames]);
 
   console.log(measurementsData);
+  //   const arr = fetchValuesArr(measurementsData);
+
+  //   console.log(arr);
 
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Wrapper>
         <Header />
-        <MenuSelect
-          setMeasurementsData={setMeasurementsData}
-          metricNames={metricNames}
-          setMetricNames={setMetricNames}
-        />
+        <MenuSelect metricNames={metricNames} setMetricNames={setMetricNames} />
         <NowWhat />
         <ToastContainer />
-        <Chart data={measurementsData} />
+        <Chart metricNames={metricNames} mData={measurementsData} />
       </Wrapper>
     </MuiThemeProvider>
   );
