@@ -8,6 +8,7 @@ import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
 import MenuSelect from './components/MenuSelect';
 import Chart from './components/Chart';
+import Cards from './components/Cards';
 
 import { fetchMeasurementsData } from './api';
 
@@ -34,9 +35,6 @@ const App = () => {
   }, [metricNames]);
 
   console.log(measurementsData);
-  //   const arr = fetchValuesArr(measurementsData);
-
-  //   console.log(arr);
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -44,6 +42,7 @@ const App = () => {
       <Wrapper>
         <Header />
         <MenuSelect metricNames={metricNames} setMetricNames={setMetricNames} />
+        <Cards mNames={metricNames} />
         <NowWhat />
         <ToastContainer />
         <Chart metricNames={metricNames} mData={measurementsData} />

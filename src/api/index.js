@@ -38,6 +38,37 @@ export const fetchMeasurementsData = async (metricsArr) => {
   }
 };
 
+export const fetchCurrentData = async (mName) => {
+  try {
+    const response = await fetch('https://react.eogresources.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+        {
+            getLastKnownMeasurement(metricName: "${mName}") {
+                metric
+                at
+                value
+                unit
+          
+            }
+          }
+                  `,
+      }),
+    });
+    // console.log(response);
+    const { data } = await response.json();
+    return data.getLastKnownMeasurement;
+    // console.log(data);
+  } catch (error) {
+    // console.log(error);
+    return `${error}`;
+  }
+};
+
 export const fetchValuesArr = (mArr) => {
   const datasets = [];
   if (mArr.length) {
@@ -47,30 +78,3 @@ export const fetchValuesArr = (mArr) => {
   }
   return datasets;
 };
-
-// export async function fetchMeasurementsData1() {
-//   try {
-//     const response = await fetch('https://rickandmortyapi.com/graphql', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({
-//         query: `
-//               query{
-//                 characters {
-//                   results {
-//                     name
-//                   }
-//                 }
-//             }
-//                   `,
-//       }),
-//     });
-//     const names = await response.json();
-//     console.log(names);
-//     return names;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }

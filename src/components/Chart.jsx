@@ -11,9 +11,12 @@ const Chart = ({ metricNames, mData }) => {
 
   // Retrieves time array to be set as X-Axis
   const xVals = mData[0].measurements.map((data) => new Date(data.at));
-  console.log(xVals);
   const dataArr = fetchValuesArr(mData);
-  console.log(dataArr);
+
+  function getYAxis(mName) {
+    if (mName.includes('injValveOpen')) return 'y2';
+    return 'y1';
+  }
 
   const colorsArr = ['#DC143C', '#FFA500', '#32CD32', '#20B2AA', '#191970', '#9400D3'];
   const datasets = dataArr.map((set, i) => ({
@@ -23,6 +26,7 @@ const Chart = ({ metricNames, mData }) => {
     borderColor: colorsArr[i],
     borderWidth: 1,
     tension: 0.5,
+    yAxisID: getYAxis(metricNames[i]),
   }));
 
   const data = {
@@ -54,15 +58,27 @@ const Chart = ({ metricNames, mData }) => {
           unit: 'hour',
         },
       },
-      y: {
+      y1: {
         title: {
           display: true,
-          text: 'Temperature (F)',
+          text: 'Temperature (F) / Pressure (PSI)',
           font: {
             size: 14,
           },
         },
         type: 'linear',
+        position: 'left',
+      },
+      y2: {
+        title: {
+          display: true,
+          text: 'Valve Open (%)',
+          font: {
+            size: 14,
+          },
+        },
+        type: 'linear',
+        position: 'right',
       },
     },
     elements: {
@@ -72,14 +88,7 @@ const Chart = ({ metricNames, mData }) => {
     },
   };
 
-  return (
-    <>
-      <div className="header">
-        <h1 className="title">Multi Axis Line Chart</h1>
-      </div>
-      <Line style={{ padding: '20px' }} data={data} options={options} />
-    </>
-  );
+  return <Line style={{ padding: '20px' }} data={data} options={options} />;
 };
 
 export default Chart;
