@@ -29,8 +29,7 @@ export const fetchMeasurementsData = async (metricsArr) => {
       }),
     });
     const { data } = await response.json();
-    console.log(data);
-    // if (!data) null;
+
     return data.getMultipleMeasurements;
   } catch (error) {
     console.log(error);
@@ -49,22 +48,17 @@ export const fetchCurrentData = async (mName) => {
         query: `
         {
             getLastKnownMeasurement(metricName: "${mName}") {
-                metric
-                at
                 value
                 unit
-          
             }
           }
                   `,
       }),
     });
-    // console.log(response);
+
     const { data } = await response.json();
     return data.getLastKnownMeasurement;
-    // console.log(data);
   } catch (error) {
-    // console.log(error);
     return `${error}`;
   }
 };

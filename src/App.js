@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
-import NowWhat from './components/NowWhat';
 import MenuSelect from './components/MenuSelect';
 import Chart from './components/Chart';
 import Cards from './components/Cards';
@@ -34,8 +32,6 @@ const App = () => {
     setMeasurementsData(await fetchMeasurementsData(metricNames));
   }, [metricNames]);
 
-  console.log(measurementsData);
-
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
@@ -43,8 +39,6 @@ const App = () => {
         <Header />
         <MenuSelect metricNames={metricNames} setMetricNames={setMetricNames} />
         <Cards mNames={metricNames} />
-        <NowWhat />
-        <ToastContainer />
         <Chart metricNames={metricNames} mData={measurementsData} />
       </Wrapper>
     </MuiThemeProvider>

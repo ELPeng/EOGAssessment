@@ -6,15 +6,13 @@ import { fetchValuesArr } from '../api';
 
 const Chart = ({ metricNames, mData }) => {
   if (!mData || mData.length === 0) return 'Loading....';
-  console.log(mData);
-  console.log(metricNames);
 
   // Retrieves time array to be set as X-Axis
   const xVals = mData[0].measurements.map((data) => new Date(data.at));
   const dataArr = fetchValuesArr(mData);
 
   function getYAxis(mName) {
-    if (mName.includes('injValveOpen')) return 'y2';
+    if (mName && mName.includes('injValveOpen')) return 'y2';
     return 'y1';
   }
 
